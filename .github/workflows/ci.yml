@@ -16,7 +16,7 @@ jobs:
     - name: ccache cache files
       uses: actions/cache@v2
       with:
-        path: build/.ccache
+        path: .ccache
         key: clang-linux-ccache
     - name: build
       run: |
