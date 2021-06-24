@@ -12,11 +12,17 @@ jobs:
     - uses: actions/checkout@v2
     - uses: Trass3r/setup-cpp@master
     - run: sudo apt install -y build-essential cmake ninja-build clang lld python3 python3-venv
+    - run: echo "::set-env name=CCACHE_DIR::$GITHUB_WORKSPACE/.ccache"
+    - name: ccache cache files
+      uses: actions/cache@v2
+      with:
+        path: build/.ccache
+        key: clang-linux-ccache
     - name: build
       run: |
         ./setup.sh
         . ./venv/bin/activate
-        build.py --use-ninja
+        build.py --use-ninja --use-ccache
     - uses: actions/upload-artifact@v2
       with:
         path: ./install-*
