@@ -28,10 +28,10 @@ jobs:
         ccache -z
         ./setup.sh
         . ./venv/bin/activate
-        build.py --use-ninja --use-ccache ${{ matrix.config.args }}
+        build.py --use-ninja --use-ccache ${{ matrix.config.args }} --variants armv7em_hard_fpv4_sp_d16 armv7em_hard_fpv5_d16 armv7em_soft_nofp armv7m_soft_nofp
         ccache -s
-    - run: cd install-*/LLVM* && tar cfav llvm-embedded.tar.xz *
+    - run: cd install-*/LLVM* && tar cfa llvm-embedded.tar.xz *
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.config.os }} build
-        path: install**/llvm-embedded.tar.bz2
+        path: install*/*/llvm-embedded.tar.bz2
