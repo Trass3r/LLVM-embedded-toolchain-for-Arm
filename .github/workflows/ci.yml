@@ -21,7 +21,7 @@ jobs:
     - run: sudo apt install -y build-essential cmake ninja-build ccache clang lld python3 python3-venv g++-mingw-w64-x86-64
     - uses: hendrikmuhs/ccache-action@v1
       with:
-        key: clang-${{ matrix.config.os }}
+        key: clang
         max-size: 5G
     - name: build
       run: |
@@ -30,7 +30,8 @@ jobs:
         . ./venv/bin/activate
         build.py --use-ninja --use-ccache ${{ matrix.config.args }}
         ccache -s
-    - run: tar cvf llvm-embedded.tar.xz -C install-*/*
+    - run: cd install-*/LLVM* && tar cfav llvm-embedded.tar.xz *
     - uses: actions/upload-artifact@v2
       with:
-        path: llvm-embedded.tar.bz2
+        name: ${{ matrix.config.os }} build
+        path: install**/llvm-embedded.tar.bz2
