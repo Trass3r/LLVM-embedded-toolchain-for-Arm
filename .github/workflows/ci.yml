@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - {os: linux, args: }
+        - {os: linux, args: ''}
         - {os: windows, args: --host-toolchain mingw --copy-runtime-dlls yes}
 
     steps:
@@ -21,8 +21,8 @@ jobs:
     - run: sudo apt install -y build-essential cmake ninja-build ccache clang lld python3 python3-venv g++-mingw-w64-x86-64
     - uses: hendrikmuhs/ccache-action@v1
       with:
-        key: clang
-        max-size: 5G
+        key: clang-${{ matrix.config.os }}
+        max-size: 2.5G
     - name: build
       run: |
         ccache -z
