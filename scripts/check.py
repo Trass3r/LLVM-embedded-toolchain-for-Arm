@@ -98,7 +98,8 @@ def _parse_clang_version(c_compiler: str) -> Optional[Version]:
     # Built from source: clang version 9.0.1
     # Remove distribution suffix (if any) and convert to a tuple
     assert ver_line.startswith('clang version ') \
-        or ver_line.startswith('Debian clang version')
+        or ver_line.startswith('Debian clang version') \
+        or ver_line.startswith('Apple clang version')
     ver_match = re.search(r'version ([0-9.]+)', ver_line)
     assert ver_match is not None
     return _str_to_ver(ver_match.group(1))
@@ -199,7 +200,7 @@ def check_prerequisites(cfg: config.Config) -> None:
                                       MIN_CCACHE_VERSION)
     if cfg.use_ninja:
         is_ok = is_ok and _check_availability('ninja', 'Ninja')
-    for tool in ['git', 'make', 'find', 'sort', 'tar', 'sed']:
+    for tool in ['git', 'make', 'find', 'sort', 'sed']:
         is_ok = is_ok and _check_availability(tool)
     if not is_ok:
         logging.error('Prerequisites check failed')

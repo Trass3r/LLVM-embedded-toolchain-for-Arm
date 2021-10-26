@@ -1,0 +1,24 @@
+name: Build (macOS)
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch: ~
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies and prepare build
+        run: |
+          brew install cmake ccache ninja python virtualenv
+          ./setup.sh
+      - name: Build
+        run: |
+          . ./venv/bin/activate
+          build.py
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macos-build
+          path: LLVMEmbeddedToolchainForArm*.gz
